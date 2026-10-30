@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O Mentiroso</title>
+<meta name="description" content="Promessas, custos e números do governo Lula, com fontes públicas e da imprensa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+
+<header class="hero">
+  <nav class="topnav">
+    <a href="#promessas">Promessas</a>
+    <a href="#buraco">O Buraco</a>
+    <a href="#assistidos">Programas sociais</a>
+    <a href="#educacao">Educação</a>
+    <a href="#redutos">Redutos do PT</a>
+    <a href="#criou">O que criou</a>
+    <a href="#pandemia">Pandemia × hoje</a>
+    <a href="#saude">Saúde</a>
+    <a href="#cortes">Cortes</a>
+    <a href="#gastanca">Gastança</a>
+    <a href="#votos">Votos</a>
+    <a href="#crime">Facções</a>
+    <a href="#fontes">Fontes</a>
+  </nav>
+  <div class="hero-inner">
+    <p class="kicker">Reeleito em 25/10/2026 com ~51,7% dos votos válidos</p>
+    <h1>O MENTIROSO</h1>
+    <p class="lead">O que foi prometido, quanto custa, o que foi entregue e o tamanho do buraco que fica para a conta do brasileiro.</p>
+    <div class="meter">
+      <span class="meter-label">Juros da dívida pagos pelo setor público desde que você abriu esta página</span>
+      <span class="meter-value" id="jurosCounter">R$ 0</span>
+      <span class="meter-note">Base: R$ 1,182 trilhão em 12 meses até ago/2026 (Banco Central) ≈ R$ 37,5 mil por segundo</span>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- PROMESSAS -->
+<section id="promessas" class="section">
+  <h2><span class="num">01</span> O placar das promessas</h2>
+  <p class="intro">As principais promessas da campanha de 2022, o custo anual estimado e o que aconteceu de fato. O levantamento do g1 conta 26 ou 27 das 36 promessas como cumpridas. Mesmo assim, <strong>70% dos brasileiros dizem que Lula não cumpre o que promete</strong> (Genial/Quaest, jun/2025). Aqui você vê o que ficou de fora, o que saiu pela metade e o que foi “cumprido” a um custo enorme.</p>
+
+  <div class="scoreboard" id="scoreboard"></div>
+  <div class="filters" id="filters">
+    <button class="chip active" data-f="todas">Todas</button>
+    <button class="chip" data-f="nao">Não cumpridas</button>
+    <button class="chip" data-f="parcial">Parciais</button>
+    <button class="chip" data-f="cumprida">Cumpridas</button>
+  </div>
+  <div class="promises" id="promises"></div>
+</section>
+
+<!-- BURACO -->
+<section id="buraco" class="section dark">
+  <h2><span class="num">02</span> O buraco</h2>
+  <p class="intro">A dívida bruta voltou ao maior nível desde 2021, e o país gasta com juros mais do que com saúde e educação somadas.</p>
+  <div class="stats">
+    <div class="stat"><b>82,9%</b><span>do PIB é a dívida bruta (ago/2026). No fim de 2022 era 71,7%.</span></div>
+    <div class="stat"><b>R$ 10,8 tri</b><span>é o tamanho da dívida bruta do governo geral.</span></div>
+    <div class="stat"><b>R$ 1,18 tri</b><span>em juros nos últimos 12 meses, ou 8,86% do PIB.</span></div>
+    <div class="stat"><b>13,75%</b><span>é a Selic, depois de chegar a 15% em 2025.</span></div>
+  </div>
+  <div class="chart-box"><canvas id="chartDivida" aria-label="Dívida bruta em % do PIB por ano"></canvas></div>
+  <p class="source">Fontes: Banco Central (Estatísticas Fiscais); Tesouro projeta 83,5% do PIB no fim de 2026.</p>
+</section>
+
+<!-- ASSISTIDOS -->
+<section id="assistidos" class="section">
+  <h2><span class="num">03</span> Um país que vive de benefício</h2>
+  <p class="intro">Em junho de 2026, <strong>19,3 milhões de famílias</strong> recebiam o Bolsa Família, com custo de R$ 13,08 bilhões no mês. São cerca de 50 milhões de pessoas para uma população de cerca de 213 milhões.</p>
+  <div class="people-wrap">
+    <div class="people" id="people" aria-label="De cada 100 brasileiros, cerca de 23 vivem em famílias do Bolsa Família"></div>
+    <div class="people-legend">
+      <p class="big">≈ 23 de cada 100</p>
+      <p>brasileiros vivem em uma família do Bolsa Família.</p>
+      <p class="big">45%</p>
+      <p>das famílias beneficiárias estão no Nordeste (8,79 milhões em fev/2026).</p>
+      <p class="big">R$ 157 bi/ano</p>
+      <p>é o custo anualizado do programa no ritmo de junho de 2026.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Ano eleitoral, fila andando:</b> o programa tinha 18,66 milhões de famílias em nov/2025 e voltou a crescer em 2026, chegando a 19,3 milhões em junho, às vésperas da eleição.
+  </div>
+  <p class="source">Fontes: MDS (Informes Bolsa Família); Poder360; IBGE (estimativa populacional).</p>
+</section>
+
+<!-- EDUCAÇÃO -->
+<section id="educacao" class="section dark">
+  <h2><span class="num">04</span> Educação das classes D e E</h2>
+  <p class="intro">Quem mais depende da escola pública é quem menos aprende. Os números abaixo mostram o tamanho do atraso.</p>
+  <div class="stats">
+    <div class="stat"><b>29%</b><span>dos brasileiros de 15 a 64 anos são analfabetos funcionais (Inaf 2024). Na população de menor renda, a proporção é bem maior.</span></div>
+    <div class="stat"><b>73%</b><span>dos alunos de 15 anos ficam abaixo do nível básico em matemática (Pisa 2022).</span></div>
+    <div class="stat"><b>~11 milhões</b><span>de brasileiros com 15 anos ou mais não sabem ler nem escrever (Censo 2022: 7% da população).</span></div>
+    <div class="stat"><b>44%</b><span>das crianças não estavam alfabetizadas ao fim do 2º ano em 2023 (Indicador Criança Alfabetizada, MEC/Inep).</span></div>
+  </div>
+  <p class="source">Fontes: Inaf/Ação Educativa e Conhecimento Social; OCDE/Inep (Pisa 2022); IBGE (Censo 2022); MEC/Inep.</p>
+</section>
+
+<!-- REDUTOS -->
+<section id="redutos" class="section">
+  <h2><span class="num">05</span> Onde o PT ganha, como o povo vive</h2>
+  <p class="intro">O Nordeste dá ao PT as maiores votações desde 2006. A Bahia é governada pelo partido desde 2007. Veja como a região está na educação, na segurança e no emprego em comparação com o Sul e o Sudeste.</p>
+  <div class="chart-grid">
+    <div class="chart-box"><h3>Analfabetismo (15+ anos, %)</h3><canvas id="chartAnalf"></canvas></div>
+    <div class="chart-box"><h3>Desemprego por estado (%, 2º tri 2025)</h3><canvas id="chartDesemp"></canvas></div>
+    <div class="chart-box"><h3>Homicídios por 100 mil hab. (2024)</h3><canvas id="chartHomic"></canvas></div>
+  </div>
+  <div class="callout">
+    <b>Bahia, 19 anos de PT no governo:</b> é o estado com mais mortes violentas em números absolutos do país, segundo o Anuário Brasileiro de Segurança Pública, e também lidera o número de famílias no Bolsa Família.
+  </div>
+  <p class="source">Fontes: IBGE (Censo 2022 e PNAD Contínua); Atlas da Violência 2026 (Ipea/FBSP); Anuário Brasileiro de Segurança Pública. Valores arredondados.</p>
+</section>
+
+<!-- O QUE CRIOU -->
+<section id="criou" class="section dark">
+  <h2><span class="num">06</span> O que ele criou de verdade</h2>
+  <p class="intro">Muita coisa que o governo apresenta como “marca do Lula” já existia com outro nome ou foi criada por outros governos.</p>
+  <div class="table-wrap">
+  <table class="tbl">
+    <thead><tr><th>Programa</th><th>Origem real</th><th>Veredito</th></tr></thead>
+    <tbody id="criouBody"></tbody>
+  </table>
+  </div>
+</section>
+
+<!-- PANDEMIA -->
+<section id="pandemia" class="section">
+  <h2><span class="num">07</span> Pandemia × hoje</h2>
+  <p class="intro">Em 2020, o país enfrentou a pior crise sanitária em um século. Seis anos depois, sem pandemia, vários indicadores fiscais estão piores. O emprego, porém, melhorou, e isso também está aqui.</p>
+  <div class="table-wrap">
+  <table class="tbl compare">
+    <thead><tr><th>Indicador</th><th>2020 (pandemia)</th><th>2026</th><th></th></tr></thead>
+    <tbody id="pandemiaBody"></tbody>
+  </table>
+  </div>
+  <p class="source">Fontes: Banco Central; IBGE (PNAD Contínua). Selic e juros: Copom e Estatísticas Fiscais do BC.</p>
+</section>
+
+<!-- SAÚDE -->
+<section id="saude" class="section dark">
+  <h2><span class="num">08</span> Saúde: mosquito venceu, vacina atrasou</h2>
+  <p class="intro">Em 2024, o Brasil teve a pior epidemia de dengue da história: mais casos do que em 2017–2023 somados. A vacina só chegou em pequena escala e a doença deixou milhares de mortos.</p>
+  <div class="chart-box wide"><canvas id="chartDengue" aria-label="Casos prováveis de dengue por ano"></canvas></div>
+  <div class="stats">
+    <div class="stat"><b>6,5 mi</b><span>casos prováveis de dengue em 2024.</span></div>
+    <div class="stat"><b>~6.300</b><span>mortes confirmadas por dengue em 2024, recorde histórico.</span></div>
+    <div class="stat"><b>13.856</b><span>casos de oropouche em 2024, com as primeiras mortes do mundo pela doença. Em 2025 foram mais de 11 mil casos.</span></div>
+    <div class="stat"><b>264 mil</b><span>casos de chikungunya em 2024.</span></div>
+  </div>
+
+  <h3 class="sub">Vacinas: tarde e pouca</h3>
+  <ul class="timeline">
+    <li><b>Mar/2023</b> Anvisa aprova a Qdenga (Takeda). O governo leva quase um ano para incorporá-la ao SUS.</li>
+    <li><b>Fev/2024</b> A vacinação começa só para crianças de 10 a 14 anos, em poucos municípios, com cerca de 6,5 milhões de doses para o ano, já no pico da epidemia.</li>
+    <li><b>2024</b> Baixa procura pela 2ª dose e lotes próximos do vencimento obrigam o ministério a remanejar doses entre estados.</li>
+    <li><b>Nov/2025</b> Anvisa aprova a vacina do Butantan, de dose única. A aplicação em massa fica para 2026.</li>
+  </ul>
+
+  <h3 class="sub">O que avançou nos governos de esquerda</h3>
+  <p>Para ser justo: o Mais Médicos foi retomado, o Farmácia Popular passou a dar todos os itens de graça a partir de 2025 e o programa “Agora Tem Especialistas” promete reduzir filas. A fila do SUS para cirurgias e exames, porém, segue na casa dos milhões, e a promessa de zerá-la não foi cumprida.</p>
+  <p class="source">Fontes: Ministério da Saúde (Painel de Arboviroses e informes semanais); Anvisa; Conass.</p>
+</section>
+
+<!-- CORTES -->
+<section id="cortes" class="section">
+  <h2><span class="num">09</span> A tesoura no bolso do povo</h2>
+  <p class="intro">Quem prometia “colocar o pobre no orçamento” cortou justamente onde o pobre está.</p>
+  <div class="cards" id="cortesCards"></div>
+</section>
+
+<!-- GASTANÇA -->
+<section id="gastanca" class="section dark">
+  <h2><span class="num">10</span> A gastança</h2>
+
+  <h3 class="sub">Cartão corporativo</h3>
+  <div class="chart-grid two">
+    <div class="chart-box"><canvas id="chartCartao" aria-label="Gastos com cartão corporativo do governo federal"></canvas></div>
+    <div>
+      <div class="stat"><b>R$ 1,44 bi</b><span>gastos com cartões corporativos pelo governo federal de 2023 a 2025.</span></div>
+      <div class="stat"><b>R$ 45,2 mi</b><span>só na Presidência (incluindo Janja, Abin e GSI), de 2023 a 2025.</span></div>
+      <div class="stat"><b>99,5%</b><span>dos gastos da Presidência estão sob sigilo, segundo o TCU.</span></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Viagens e hospedagens</h3>
+  <div class="globe-row">
+    <div class="globe" aria-hidden="true">✈</div>
+    <div class="stats">
+      <div class="stat"><b>155 dias</b><span>fora do Brasil no 3º mandato, em 45 viagens a 41 países (Poder360).</span></div>
+      <div class="stat"><b>R$ 65,9 mi</b><span>em 2023: 62 dias e 15 viagens, sem contar os voos da FAB, que são sigilosos.</span></div>
+      <div class="stat"><b>R$ 27,8 mi</b><span>só em hospedagens da comitiva em 2023.</span></div>
+      <div class="stat"><b>R$ 44 mi</b><span>em 2025: 50 dias e 19 países.</span></div>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Diárias:</b> os custos de viagem incluem diárias pagas a servidores, seguranças e assessores da comitiva. O detalhamento por pessoa aparece no Portal da Transparência (Viagens a serviço). Parte da despesa, como os voos da FAB e a segurança, fica fora dos totais por sigilo.
+  </div>
+
+  <h3 class="sub">Rombo no INSS</h3>
+  <div class="stats">
+    <div class="stat"><b>R$ 6,3 bi</b><span>em descontos indevidos de aposentados investigados pela PF e pela CGU. O esquema começou antes de 2023, mas explodiu no governo atual.</span></div>
+    <div class="stat"><b>~9 mi</b><span>de aposentados e pensionistas sofreram descontos, segundo estimativa do governo.</span></div>
+    <div class="stat"><b>0</b><span>relatórios finais aprovados: a CPMI acabou em mar/2026 sem aprovar conclusão.</span></div>
+    <div class="stat"><b>38</b><span>ministérios na Esplanada, contra 23 no governo anterior.</span></div>
+  </div>
+  <p class="source">Fontes: Portal da Transparência; Aos Fatos; TCU; Poder360; Metrópoles; CGU/PF; Agência Senado.</p>
+</section>
+
+<!-- VOTOS -->
+<section id="votos" class="section">
+  <h2><span class="num">11</span> Benefício em ano de eleição <span class="tag">Opinião</span></h2>
+  <p class="intro">Nenhum tribunal condenou o governo por compra de votos. Mas o calendário fala por si: as bondades mais caras chegaram justamente no ano da eleição.</p>
+  <ul class="timeline">
+    <li><b>2025–2026</b> Isenção do IR para quem ganha até R$ 5 mil, em vigor a partir de jan/2026. Custo estimado: cerca de R$ 26 bi por ano.</li>
+    <li><b>2025</b> Gás do Povo: botijão gratuito para famílias de baixa renda, com expansão em 2026.</li>
+    <li><b>2024–2026</b> Pé-de-Meia: poupança para estudantes do ensino médio, cerca de R$ 12 bi por ano, parcialmente pago fora do Orçamento, o que levou o TCU a cobrar regularização.</li>
+    <li><b>2026</b> Bolsa Família volta a crescer: de 18,66 mi para 19,3 mi de famílias até junho.</li>
+    <li><b>Out/2026</b> Promulgada a PEC do fim da escala 6×1, a poucos dias do 2º turno.</li>
+  </ul>
+
+  <h3 class="sub">Votos nos presídios</h3>
+  <div class="prison">
+    <div class="bar-split">
+      <div class="seg lula" style="width:72.6%"><span>Lula 72,6%</span></div>
+      <div class="seg outro" style="width:23.3%"><span>Flávio 23,3%</span></div>
+    </div>
+    <p>Votos válidos nas 243 seções instaladas em presídios e unidades socioeducativas no 1º turno de 2026 (análise do Poder360 com dados do TSE). Só presos provisórios e adolescentes internados podem votar, e servidores também votam nessas seções.</p>
+  </div>
+  <p class="source">Fontes: TSE; Poder360; Gazeta SP; Receita Federal; MDS; TCU.</p>
+</section>
+
+<!-- CRIME -->
+<section id="crime" class="section dark">
+  <h2><span class="num">12</span> O Brasil das facções</h2>
+  <div class="stats">
+    <div class="stat"><b>28,5 mi</b><span>de brasileiros (19% da população com 16 anos ou mais) vivem em bairros sob influência de facções ou milícias (Datafolha/FBSP, out/2025).</span></div>
+    <div class="stat"><b>+5 p.p.</b><span>em um ano: em 2024 eram 14%.</span></div>
+    <div class="stat"><b>PCC e CV</b><span>estão presentes em praticamente todos os estados e infiltrados em combustíveis, fintechs e no mercado financeiro (Operação Carbono Oculto, 2025).</span></div>
+    <div class="stat"><b>0</b><span>Ministério da Segurança Pública criado: promessa de campanha não cumprida.</span></div>
+  </div>
+  <div class="chart-box"><canvas id="chartFaccoes" aria-label="Percentual da população que vive sob influência de facções"></canvas></div>
+  <p class="source">Fontes: Datafolha/Fórum Brasileiro de Segurança Pública; Receita Federal/PF (Operação Carbono Oculto).</p>
+</section>
+
+<!-- FONTES -->
+<section id="fontes" class="section">
+  <h2><span class="num">13</span> Fontes</h2>
+  <p class="intro">Todos os números vêm de órgãos públicos ou da imprensa. Eles mudam com frequência; confira sempre a fonte original.</p>
+  <ul class="sources" id="sourcesList"></ul>
+  <p class="disclaimer">O Mentiroso é um site de opinião e crítica política. Os dados são públicos e as interpretações são dos autores. Encontrou algum número errado? Abra uma issue no repositório.</p>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p><b>O MENTIROSO</b> · Dados públicos, opinião assumida.</p>
+</footer>
+
+</body>
+</html>
