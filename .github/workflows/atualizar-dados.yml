@@ -1,0 +1,55 @@
+name: Atualizar dados
+
+# Busca os indicadores oficiais (Banco Central e IBGE) todo dia,
+# grava public/data/auto.js e publica o site na Netlify se algo mudou.
+on:
+  schedule:
+    - cron: "17 10 * * *"   # 07:17 em Brasília
+  workflow_dispatch:
+  push:
+    paths:
+      - "public/**"
+      - "scripts/**"
+      - "netlify.toml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar-dados
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Buscar dados oficiais
+        run: node scripts/atualizar-dados.mjs
+
+      - name: Salvar no repositório se mudou
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/auto.js
+          if git diff --cached --quiet; then
+            echo "mudou=false" >> "$GITHUB_OUTPUT"
+            echo "Nenhum dado novo."
+          else
+            git commit -m "Atualiza dados oficiais ($(date -u +%F))"
+            git push
+            echo "mudou=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar na Netlify
+        if: (steps.commit.outputs.mudou == 'true' || github.event_name != 'schedule') && env.NETLIFY_AUTH_TOKEN != ''
+        run: npx -y netlify-cli@17 deploy --prod --dir public --site "$NETLIFY_SITE_ID" --message "Dados atualizados $(date -u +%F)"

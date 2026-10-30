@@ -1,0 +1,9 @@
+# Publica a pasta public/. Sem etapa de build: o site é estático.
+[build]
+  publish = "public"
+  command = ""
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

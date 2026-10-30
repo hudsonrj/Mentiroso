@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="data/dados.js" defer></script>
+<script src="data/auto.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body>
@@ -90,7 +91,8 @@
     <div class="meter">
       <span class="meter-label"><span class="pulse"></span>Juros da dívida pagos desde que você abriu esta página</span>
       <span class="meter-value" id="jurosCounter">R$ 0</span>
-      <span class="meter-note">Base: R$ 1,182 trilhão em 12 meses até ago/2026 (Banco Central) ≈ R$ 37,5 mil por segundo</span>
+      <span class="meter-note">Base: <span data-auto="jurosReais">R$ 1,20 tri</span> em 12 meses até <span data-auto="jurosRef">set/2026</span> (Banco Central) ≈ <span data-auto="jurosSegundo">R$ 38,2 mil</span> por segundo</span>
+      <span class="updated"><span class="pulse"></span>Dados oficiais atualizados em <span data-auto="atualizado">—</span></span>
     </div>
   </div>
   <a class="scroll-cue" href="#promessas" aria-label="Rolar para as promessas"><span></span></a>
@@ -98,8 +100,8 @@
 
 <div class="ticker" aria-label="Manchetes">
   <div class="ticker-track">
-    <span>Dívida bruta em 82,9% do PIB</span><span>R$ 1,18 trilhão em juros em 12 meses</span><span>28,5 milhões de brasileiros sob influência de facções</span><span>6,5 milhões de casos de dengue em 2024</span><span>155 dias fora do Brasil</span><span>99,5% dos gastos da Presidência no cartão sob sigilo</span><span>R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span>38 ministérios</span>
-    <span aria-hidden="true">Dívida bruta em 82,9% do PIB</span><span aria-hidden="true">R$ 1,18 trilhão em juros em 12 meses</span><span aria-hidden="true">28,5 milhões de brasileiros sob influência de facções</span><span aria-hidden="true">6,5 milhões de casos de dengue em 2024</span><span aria-hidden="true">155 dias fora do Brasil</span><span aria-hidden="true">99,5% dos gastos da Presidência no cartão sob sigilo</span><span aria-hidden="true">R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span aria-hidden="true">38 ministérios</span>
+    <span>Dívida bruta em <span data-auto="dividaPct">82,9%</span> do PIB</span><span><span data-auto="jurosReais">R$ 1,20 tri</span> em juros em 12 meses</span><span>Selic em <span data-auto="selic">13,75%</span></span><span>28,5 milhões de brasileiros sob influência de facções</span><span>6,5 milhões de casos de dengue em 2024</span><span>155 dias fora do Brasil</span><span>99,5% dos gastos da Presidência no cartão sob sigilo</span><span>R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span>38 ministérios</span>
+    <span aria-hidden="true">Dívida bruta em <span data-auto="dividaPct">82,9%</span> do PIB</span><span aria-hidden="true"><span data-auto="jurosReais">R$ 1,20 tri</span> em juros em 12 meses</span><span aria-hidden="true">Selic em <span data-auto="selic">13,75%</span></span><span aria-hidden="true">28,5 milhões de brasileiros sob influência de facções</span><span aria-hidden="true">6,5 milhões de casos de dengue em 2024</span><span aria-hidden="true">155 dias fora do Brasil</span><span aria-hidden="true">99,5% dos gastos da Presidência no cartão sob sigilo</span><span aria-hidden="true">R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span aria-hidden="true">38 ministérios</span>
   </div>
 </div>
 
@@ -125,13 +127,17 @@
   <h2><span class="num">02</span> O buraco</h2>
   <p class="intro">A dívida bruta voltou ao maior nível desde 2021, e o país gasta com juros mais do que com saúde e educação somadas.</p>
   <div class="stats">
-    <div class="stat"><b>82,9%</b><span>do PIB é a dívida bruta (ago/2026). No fim de 2022 era 71,7%.</span></div>
-    <div class="stat"><b>R$ 10,8 tri</b><span>é o tamanho da dívida bruta do governo geral.</span></div>
-    <div class="stat"><b>R$ 1,18 tri</b><span>em juros nos últimos 12 meses, ou 8,86% do PIB.</span></div>
-    <div class="stat"><b>13,75%</b><span>é a Selic, depois de chegar a 15% em 2025.</span></div>
+    <div class="stat"><b data-auto="dividaPct">82,9%</b><span>do PIB é a dívida bruta (<span data-auto="dividaRef">set/2026</span>). No fim de 2022 era <span data-auto="divida2022">71,7%</span>.</span></div>
+    <div class="stat"><b data-auto="dividaReais">R$ 11,11 tri</b><span>é o tamanho da dívida bruta do governo geral.</span></div>
+    <div class="stat"><b data-auto="jurosReais">R$ 1,20 tri</b><span>em juros nos últimos 12 meses, ou <span data-auto="jurosPib">8,99%</span> do PIB.</span></div>
+    <div class="stat"><b data-auto="selic">13,75%</b><span>é a Selic hoje. No governo atual ela chegou a <span data-auto="selicMax">15%</span>.</span></div>
   </div>
-  <div class="chart-box"><canvas id="chartDivida" aria-label="Dívida bruta em % do PIB por ano"></canvas></div>
-  <p class="source">Fontes: Banco Central (Estatísticas Fiscais); Tesouro projeta 83,5% do PIB no fim de 2026.</p>
+  <div id="gDivida" class="chart-slot"></div>
+  <div class="chart-grid">
+    <div id="gJuros" class="chart-slot"></div>
+    <div id="gSelic" class="chart-slot"></div>
+  </div>
+  <p class="source">Fonte: Banco Central (séries SGS 13762, 13761, 5760, 4616 e 432), atualizadas automaticamente. Passe o dedo ou o mouse sobre as linhas para ver cada mês.</p>
 </section>
 
 <!-- ASSISTIDOS -->
@@ -149,6 +155,10 @@
       <p>é o custo anualizado do programa no ritmo de junho de 2026.</p>
     </div>
   </div>
+  <div class="chart-grid">
+    <div id="gBF" class="chart-slot"></div>
+    <div id="gBFReg" class="chart-slot"></div>
+  </div>
   <div class="callout">
     <b>Ano eleitoral, fila andando:</b> o programa tinha 18,66 milhões de famílias em nov/2025 e voltou a crescer em 2026, chegando a 19,3 milhões em junho, às vésperas da eleição.
   </div>
@@ -165,6 +175,7 @@
     <div class="stat"><b>~11 milhões</b><span>de brasileiros com 15 anos ou mais não sabem ler nem escrever (Censo 2022: 7% da população).</span></div>
     <div class="stat"><b>44%</b><span>das crianças não estavam alfabetizadas ao fim do 2º ano em 2023 (Indicador Criança Alfabetizada, MEC/Inep).</span></div>
   </div>
+  <div id="gEdu" class="chart-slot"></div>
   <p class="source">Fontes: Inaf/Ação Educativa e Conhecimento Social; OCDE/Inep (Pisa 2022); IBGE (Censo 2022); MEC/Inep.</p>
 </section>
 
@@ -173,14 +184,14 @@
   <h2><span class="num">05</span> Onde o PT ganha, como o povo vive</h2>
   <p class="intro">O Nordeste dá ao PT as maiores votações desde 2006. A Bahia é governada pelo partido desde 2007. Veja como a região está na educação, na segurança e no emprego em comparação com o Sul e o Sudeste.</p>
   <div class="chart-grid">
-    <div class="chart-box"><h3>Analfabetismo (15+ anos, %)</h3><canvas id="chartAnalf"></canvas></div>
-    <div class="chart-box"><h3>Desemprego por estado (%, 2º tri 2025)</h3><canvas id="chartDesemp"></canvas></div>
-    <div class="chart-box"><h3>Homicídios por 100 mil hab. (2024)</h3><canvas id="chartHomic"></canvas></div>
+    <div id="gAnalf" class="chart-slot"></div>
+    <div id="gHomic" class="chart-slot"></div>
   </div>
+  <div id="gDesempUF" class="chart-slot"></div>
   <div class="callout">
     <b>Bahia, 19 anos de PT no governo:</b> é o estado com mais mortes violentas em números absolutos do país, segundo o Anuário Brasileiro de Segurança Pública, e também lidera o número de famílias no Bolsa Família.
   </div>
-  <p class="source">Fontes: IBGE (Censo 2022 e PNAD Contínua); Atlas da Violência 2026 (Ipea/FBSP); Anuário Brasileiro de Segurança Pública. Valores arredondados.</p>
+  <p class="source">Fontes: IBGE (Censo 2022; PNAD Contínua via SIDRA, atualizada automaticamente); Atlas da Violência 2026 (Ipea/FBSP); Anuário Brasileiro de Segurança Pública. Valores arredondados.</p>
 </section>
 
 <!-- O QUE CRIOU -->
@@ -199,20 +210,19 @@
 <section id="pandemia" class="section">
   <h2><span class="num">07</span> Pandemia × hoje</h2>
   <p class="intro">Em 2020, o país enfrentou a pior crise sanitária em um século. Seis anos depois, sem pandemia, vários indicadores fiscais estão piores. O emprego, porém, melhorou, e isso também está aqui.</p>
-  <div class="table-wrap">
-  <table class="tbl compare">
-    <thead><tr><th>Indicador</th><th>2020 (pandemia)</th><th>2026</th><th></th></tr></thead>
-    <tbody id="pandemiaBody"></tbody>
-  </table>
-  </div>
-  <p class="source">Fontes: Banco Central; IBGE (PNAD Contínua). Selic e juros: Copom e Estatísticas Fiscais do BC.</p>
+  <div id="gPandemia" class="chart-slot"></div>
+  <div id="gDesemp" class="chart-slot"></div>
+  <p class="source">Fontes: Banco Central e IBGE (PNAD Contínua), atualizados automaticamente; Ministério da Saúde (dengue).</p>
 </section>
 
 <!-- SAÚDE -->
 <section id="saude" class="section dark">
   <h2><span class="num">08</span> Saúde: mosquito venceu, vacina atrasou</h2>
   <p class="intro">Em 2024, o Brasil teve a pior epidemia de dengue da história: mais casos do que em 2017–2023 somados. A vacina só chegou em pequena escala e a doença deixou milhares de mortos.</p>
-  <div class="chart-box wide"><canvas id="chartDengue" aria-label="Casos prováveis de dengue por ano"></canvas></div>
+  <div class="chart-grid wide-first">
+    <div id="gDengue" class="chart-slot"></div>
+    <div id="gArbo" class="chart-slot"></div>
+  </div>
   <div class="stats">
     <div class="stat"><b>6,5 mi</b><span>casos prováveis de dengue em 2024.</span></div>
     <div class="stat"><b>~6.300</b><span>mortes confirmadas por dengue em 2024, recorde histórico.</span></div>
@@ -246,7 +256,7 @@
 
   <h3 class="sub">Cartão corporativo</h3>
   <div class="chart-grid two">
-    <div class="chart-box"><canvas id="chartCartao" aria-label="Gastos com cartão corporativo do governo federal"></canvas></div>
+    <div id="gCartao" class="chart-slot"></div>
     <div>
       <div class="stat"><b>R$ 1,44 bi</b><span>gastos com cartões corporativos pelo governo federal de 2023 a 2025.</span></div>
       <div class="stat"><b>R$ 45,2 mi</b><span>só na Presidência (incluindo Janja, Abin e GSI), de 2023 a 2025.</span></div>
@@ -264,6 +274,7 @@
       <div class="stat"><b>R$ 44 mi</b><span>em 2025: 50 dias e 19 países.</span></div>
     </div>
   </div>
+  <div id="gViagens" class="chart-slot"></div>
   <div class="callout">
     <b>Diárias:</b> os custos de viagem incluem diárias pagas a servidores, seguranças e assessores da comitiva. O detalhamento por pessoa aparece no Portal da Transparência (Viagens a serviço). Parte da despesa, como os voos da FAB e a segurança, fica fora dos totais por sigilo.
   </div>
@@ -292,10 +303,7 @@
 
   <h3 class="sub">Votos nos presídios</h3>
   <div class="prison">
-    <div class="bar-split">
-      <div class="seg lula" style="--w:72.6%"><span>Lula 72,6%</span></div>
-      <div class="seg outro" style="--w:23.3%"><span>Flávio 23,3%</span></div>
-    </div>
+    <div id="gPresidios" class="chart-slot bare"></div>
     <p>Votos válidos nas 243 seções instaladas em presídios e unidades socioeducativas no 1º turno de 2026 (análise do Poder360 com dados do TSE). Só presos provisórios e adolescentes internados podem votar, e servidores também votam nessas seções.</p>
   </div>
   <p class="source">Fontes: TSE; Poder360; Gazeta SP; Receita Federal; MDS; TCU.</p>
@@ -310,7 +318,7 @@
     <div class="stat"><b>PCC e CV</b><span>estão presentes em praticamente todos os estados e infiltrados em combustíveis, fintechs e no mercado financeiro (Operação Carbono Oculto, 2025).</span></div>
     <div class="stat"><b>0</b><span>Ministério da Segurança Pública criado: promessa de campanha não cumprida.</span></div>
   </div>
-  <div class="chart-box"><canvas id="chartFaccoes" aria-label="Percentual da população que vive sob influência de facções"></canvas></div>
+  <div id="gFaccoes" class="chart-slot"></div>
   <p class="source">Fontes: Datafolha/Fórum Brasileiro de Segurança Pública; Receita Federal/PF (Operação Carbono Oculto).</p>
 </section>
 
