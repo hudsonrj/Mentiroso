@@ -107,8 +107,9 @@ function el(tag, cls, html) {
 function renderPromessas(filter) {
   const box = document.getElementById("promises");
   box.innerHTML = "";
-  PROMESSAS.filter(p => filter === "todas" || p.s === filter).forEach(p => {
-    const c = el("article", "promise " + p.s);
+  PROMESSAS.filter(p => filter === "todas" || p.s === filter).forEach((p, i) => {
+    const c = el("article", "promise tilt " + p.s);
+    c.style.setProperty("--i", i);
     c.innerHTML = `<span class="badge ${p.s}">${STATUS_LABEL[p.s]}</span>
       <h3>${p.t}</h3><p>${p.d}</p><p class="cost">Custo: <b>${p.custo}</b></p>`;
     box.appendChild(c);
@@ -126,7 +127,11 @@ function renderScoreboard() {
 
 function renderPeople() {
   const box = document.getElementById("people");
-  for (let i = 0; i < 100; i++) box.appendChild(el("span", i < 23 ? "p on" : "p"));
+  for (let i = 0; i < 100; i++) {
+    const p = el("span", i < 23 ? "p on" : "p");
+    p.style.setProperty("--i", i);
+    box.appendChild(p);
+  }
 }
 
 function renderTables() {
@@ -135,7 +140,7 @@ function renderTables() {
   document.getElementById("pandemiaBody").innerHTML = PANDEMIA.map(([i, a, b, v]) =>
     `<tr><td>${i}</td><td>${a}</td><td><b>${b}</b></td><td><span class="trend ${v === "melhor" ? "up" : "down"}">${v}</span></td></tr>`).join("");
   document.getElementById("cortesCards").innerHTML = CORTES.map(([t, d]) =>
-    `<article class="card"><div class="scissors" aria-hidden="true">✂</div><h3>${t}</h3><p>${d}</p></article>`).join("");
+    `<article class="card tilt"><div class="scissors" aria-hidden="true">✂</div><h3>${t}</h3><p>${d}</p></article>`).join("");
   document.getElementById("sourcesList").innerHTML = SOURCES.map(([t, u]) =>
     `<li><a href="${u}" target="_blank" rel="noopener">${t}</a></li>`).join("");
 }
@@ -155,18 +160,31 @@ function css(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
+// Cria o gráfico só quando ele entra na tela, para a animação ser vista.
+function lazyChart(id, config) {
+  const canvas = document.getElementById(id);
+  const io = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) return;
+    io.disconnect();
+    new Chart(canvas, config);
+  }, { threshold: 0.3 });
+  io.observe(canvas);
+}
+
 function renderCharts() {
   if (!window.Chart) return;
   const ink = css("--ink-soft"), grid = css("--grid"), red = css("--red"), mute = css("--mute");
   Chart.defaults.color = ink;
   Chart.defaults.font.family = "Inter, system-ui, sans-serif";
   Chart.defaults.borderColor = grid;
+  Chart.defaults.animation.duration = 1400;
+  Chart.defaults.animation.easing = "easeOutQuart";
   const noLegend = { plugins: { legend: { display: false } }, maintainAspectRatio: false };
   // Destaca em vermelho os anos do governo atual (a partir de 2023).
   const lulaColors = (labels) => labels.map(l => (parseInt(l, 10) >= 2023 ? red : mute));
 
   const anosDiv = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026*"];
-  new Chart(document.getElementById("chartDivida"), {
+  lazyChart("chartDivida", {
     type: "bar",
     data: { labels: anosDiv, datasets: [{ data: [75.3, 74.4, 86.9, 78.3, 71.7, 74.4, 76.5, 78.7, 82.9],
       backgroundColor: lulaColors(anosDiv), borderRadius: 4 }] },
@@ -175,7 +193,7 @@ function renderCharts() {
   });
 
   const anosDen = ["2019", "2020", "2021", "2022", "2023", "2024", "2025"];
-  new Chart(document.getElementById("chartDengue"), {
+  lazyChart("chartDengue", {
     type: "bar",
     data: { labels: anosDen, datasets: [{ data: [1.54, 0.98, 0.54, 1.45, 1.66, 6.59, 1.64],
       backgroundColor: lulaColors(anosDen), borderRadius: 4 }] },
@@ -183,7 +201,7 @@ function renderCharts() {
       plugins: { legend: { display: false }, title: { display: true, text: "Casos prováveis de dengue (milhões) · vermelho = governo Lula 3" } } },
   });
 
-  const hbar = (id, labels, data, highlight, suffix) => new Chart(document.getElementById(id), {
+  const hbar = (id, labels, data, highlight, suffix) => lazyChart(id, {
     type: "bar",
     data: { labels, datasets: [{ data, backgroundColor: labels.map((_, i) => highlight.includes(i) ? red : mute), borderRadius: 4 }] },
     options: { ...noLegend, indexAxis: "y", scales: { x: { ticks: { callback: v => v + suffix } } } },
@@ -192,18 +210,78 @@ function renderCharts() {
   hbar("chartDesemp", ["Pernambuco", "Bahia", "Brasil", "Mato Grosso", "Santa Catarina"], [10.4, 9.1, 5.8, 2.8, 2.2], [0, 1], "%");
   hbar("chartHomic", ["Amapá", "Bahia", "Santa Catarina", "São Paulo"], [45.7, 40.9, 8.8, 6.6], [1], "");
 
-  new Chart(document.getElementById("chartCartao"), {
+  lazyChart("chartCartao", {
     type: "bar",
     data: { labels: ["2023", "2024", "2025"], datasets: [{ data: [430, 584, 423], backgroundColor: red, borderRadius: 4 }] },
     options: { ...noLegend, scales: { y: { ticks: { callback: v => "R$ " + v + " mi" } } },
       plugins: { legend: { display: false }, title: { display: true, text: "Cartões corporativos, governo federal (R$ milhões)" } } },
   });
 
-  new Chart(document.getElementById("chartFaccoes"), {
+  lazyChart("chartFaccoes", {
     type: "bar",
     data: { labels: ["2024", "2025"], datasets: [{ data: [14, 19], backgroundColor: [mute, red], borderRadius: 4 }] },
     options: { ...noLegend, indexAxis: "y", scales: { x: { min: 0, max: 25, ticks: { callback: v => v + "%" } } },
       plugins: { legend: { display: false }, title: { display: true, text: "Brasileiros que vivem em bairros com facções ou milícias (%)" } } },
+  });
+}
+
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function startProgress() {
+  const bar = document.getElementById("progressBar");
+  const update = () => {
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + "%";
+  };
+  addEventListener("scroll", update, { passive: true });
+  update();
+}
+
+// Anima de 0 até o número que já está escrito no elemento, mantendo prefixo e sufixo.
+function countUp(node) {
+  const m = node.textContent.match(/^(\D*?)(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)(.*)$/s);
+  if (!m) return;
+  const [, pre, num, post] = m;
+  const decimals = (num.split(",")[1] || "").length;
+  const target = parseFloat(num.replace(/\./g, "").replace(",", "."));
+  const fmt = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const t0 = performance.now(), dur = 1600;
+  (function tick(t) {
+    const k = Math.min(1, (t - t0) / dur);
+    node.textContent = pre + fmt.format(target * (1 - Math.pow(1 - k, 3))) + post;
+    if (k < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+function startReveal() {
+  const targets = document.querySelectorAll(".section h2, .intro, .stat, .score, .chart-box, .table-wrap, .callout, .timeline li, .card, .prison, .people, .people-legend, .globe, .sub, .sources, .disclaimer");
+  targets.forEach(t => {
+    t.classList.add("reveal");
+    const sibs = [...t.parentElement.children];
+    t.style.setProperty("--rd", (sibs.indexOf(t) % 6) * 80 + "ms");
+  });
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    io.unobserve(e.target);
+    if (!REDUCED) e.target.querySelectorAll(":scope > b").forEach(countUp);
+  }), { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+  targets.forEach(t => io.observe(t));
+}
+
+// Inclinação 3D suave nos cartões ao passar o mouse.
+function startTilt() {
+  if (REDUCED || !matchMedia("(hover: hover)").matches) return;
+  document.addEventListener("pointermove", e => {
+    const c = e.target.closest(".tilt");
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    c.style.transform = `perspective(700px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+  });
+  document.addEventListener("pointerout", e => {
+    const c = e.target.closest(".tilt");
+    if (c && !c.contains(e.relatedTarget)) c.style.transform = "";
   });
 }
 
@@ -214,6 +292,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTables();
   startCounter();
   renderCharts();
+  startProgress();
+  startReveal();
+  startTilt();
   document.getElementById("filters").addEventListener("click", e => {
     const b = e.target.closest(".chip");
     if (!b) return;

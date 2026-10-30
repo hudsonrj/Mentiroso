@@ -13,8 +13,21 @@
 </head>
 <body>
 
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
 <header class="hero">
   <nav class="topnav">
+    <a href="#" class="brand">O MENTIROSO</a>
     <a href="#promessas">Promessas</a>
     <a href="#buraco">O Buraco</a>
     <a href="#assistidos">Programas sociais</a>
@@ -29,17 +42,66 @@
     <a href="#crime">Facções</a>
     <a href="#fontes">Fontes</a>
   </nav>
+
+  <svg class="flag" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1000" height="700" fill="#009c3b"/>
+    <polygon points="85,350 500,85 915,350 500,615" fill="#ffdf00"/>
+    <circle cx="500" cy="350" r="175" fill="#002776"/>
+    <path id="faixa" d="M330,395 Q500,270 672,330" fill="none"/>
+    <path d="M327,370 Q500,240 675,305 L668,350 Q500,290 334,415 Z" fill="#fff"/>
+    <text font-family="Inter, sans-serif" font-weight="800" font-size="19" fill="#009c3b" letter-spacing="2"><textPath href="#faixa" startOffset="7%">ORDEM E PROGRESSO</textPath></text>
+    <g fill="#fff">
+      <circle cx="430" cy="430" r="5"/><circle cx="470" cy="455" r="4"/><circle cx="520" cy="470" r="5"/>
+      <circle cx="560" cy="440" r="4"/><circle cx="600" cy="410" r="5"/><circle cx="455" cy="400" r="3"/>
+      <circle cx="540" cy="415" r="3"/><circle cx="495" cy="440" r="4"/><circle cx="580" cy="460" r="3"/>
+      <circle cx="410" cy="390" r="3"/><circle cx="505" cy="500" r="4"/><circle cx="620" cy="385" r="3"/>
+    </g>
+  </svg>
+
+  <div class="blood" aria-hidden="true">
+    <div class="pool"></div>
+    <i class="drip" style="--x:4%;--w:46px;--h:28vh;--d:.2s"></i>
+    <i class="drip" style="--x:11%;--w:24px;--h:44vh;--d:.9s"></i>
+    <i class="drip" style="--x:19%;--w:60px;--h:18vh;--d:.4s"></i>
+    <i class="drip" style="--x:27%;--w:30px;--h:38vh;--d:1.3s"></i>
+    <i class="drip" style="--x:36%;--w:52px;--h:24vh;--d:.6s"></i>
+    <i class="drip" style="--x:45%;--w:22px;--h:46vh;--d:1.6s"></i>
+    <i class="drip" style="--x:53%;--w:70px;--h:16vh;--d:.3s"></i>
+    <i class="drip" style="--x:62%;--w:28px;--h:40vh;--d:1.1s"></i>
+    <i class="drip" style="--x:70%;--w:48px;--h:22vh;--d:.7s"></i>
+    <i class="drip" style="--x:78%;--w:26px;--h:42vh;--d:1.8s"></i>
+    <i class="drip" style="--x:86%;--w:58px;--h:26vh;--d:.5s"></i>
+    <i class="drip" style="--x:94%;--w:32px;--h:36vh;--d:1.4s"></i>
+    <i class="drip" style="--x:8%;--w:80px;--h:6vh;--d:0.1s"></i>
+    <i class="drip" style="--x:23%;--w:90px;--h:8vh;--d:0.2s"></i>
+    <i class="drip" style="--x:40%;--w:70px;--h:5vh;--d:0.15s"></i>
+    <i class="drip" style="--x:58%;--w:96px;--h:7vh;--d:0.25s"></i>
+    <i class="drip" style="--x:74%;--w:84px;--h:6vh;--d:0.05s"></i>
+    <i class="drip" style="--x:90%;--w:76px;--h:9vh;--d:0.3s"></i>
+    <i class="drip" style="--x:32%;--w:40px;--h:58vh;--d:2.0s"></i>
+    <i class="drip" style="--x:66%;--w:36px;--h:54vh;--d:2.3s"></i>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+
   <div class="hero-inner">
     <p class="kicker">Reeleito em 25/10/2026 com ~51,7% dos votos válidos</p>
-    <h1>O MENTIROSO</h1>
+    <h1 class="glitch" data-text="O MENTIROSO">O MENTIROSO</h1>
     <p class="lead">O que foi prometido, quanto custa, o que foi entregue e o tamanho do buraco que fica para a conta do brasileiro.</p>
     <div class="meter">
-      <span class="meter-label">Juros da dívida pagos pelo setor público desde que você abriu esta página</span>
+      <span class="meter-label"><span class="pulse"></span>Juros da dívida pagos desde que você abriu esta página</span>
       <span class="meter-value" id="jurosCounter">R$ 0</span>
       <span class="meter-note">Base: R$ 1,182 trilhão em 12 meses até ago/2026 (Banco Central) ≈ R$ 37,5 mil por segundo</span>
     </div>
   </div>
+  <a class="scroll-cue" href="#promessas" aria-label="Rolar para as promessas"><span></span></a>
 </header>
+
+<div class="ticker" aria-label="Manchetes">
+  <div class="ticker-track">
+    <span>Dívida bruta em 82,9% do PIB</span><span>R$ 1,18 trilhão em juros em 12 meses</span><span>28,5 milhões de brasileiros sob influência de facções</span><span>6,5 milhões de casos de dengue em 2024</span><span>155 dias fora do Brasil</span><span>99,5% dos gastos da Presidência no cartão sob sigilo</span><span>R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span>38 ministérios</span>
+    <span aria-hidden="true">Dívida bruta em 82,9% do PIB</span><span aria-hidden="true">R$ 1,18 trilhão em juros em 12 meses</span><span aria-hidden="true">28,5 milhões de brasileiros sob influência de facções</span><span aria-hidden="true">6,5 milhões de casos de dengue em 2024</span><span aria-hidden="true">155 dias fora do Brasil</span><span aria-hidden="true">99,5% dos gastos da Presidência no cartão sob sigilo</span><span aria-hidden="true">R$ 6,3 bi em descontos indevidos de aposentados no INSS</span><span aria-hidden="true">38 ministérios</span>
+  </div>
+</div>
 
 <main>
 
@@ -231,8 +293,8 @@
   <h3 class="sub">Votos nos presídios</h3>
   <div class="prison">
     <div class="bar-split">
-      <div class="seg lula" style="width:72.6%"><span>Lula 72,6%</span></div>
-      <div class="seg outro" style="width:23.3%"><span>Flávio 23,3%</span></div>
+      <div class="seg lula" style="--w:72.6%"><span>Lula 72,6%</span></div>
+      <div class="seg outro" style="--w:23.3%"><span>Flávio 23,3%</span></div>
     </div>
     <p>Votos válidos nas 243 seções instaladas em presídios e unidades socioeducativas no 1º turno de 2026 (análise do Poder360 com dados do TSE). Só presos provisórios e adolescentes internados podem votar, e servidores também votam nessas seções.</p>
   </div>
@@ -263,7 +325,7 @@
 </main>
 
 <footer class="footer">
-  <p><b>O MENTIROSO</b> · Dados públicos, opinião assumida.</p>
+  <p class="footer-brand">O MENTIROSO</p><p>Dados públicos, opinião assumida.</p>
 </footer>
 
 </body>
